@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}감동타임{% endblock %}
+
+{% block content %}
+<div class="shop-hero">
+  <p class="shop-eyebrow">Corporate Gifting</p>
+  <h1>감동타임</h1>
+  <p class="text-muted">임직원에게 감동을 전하는 선물 · 웰컴키트 · 행사상품</p>
+
+  <div class="shop-banner-grid">
+    <div class="shop-banner-card">
+      <div class="shop-banner-thumb">🎁</div>
+      <div>웰컴키트</div>
+    </div>
+    <div class="shop-banner-card">
+      <div class="shop-banner-thumb">🏆</div>
+      <div>기념품</div>
+    </div>
+    <div class="shop-banner-card">
+      <div class="shop-banner-thumb">🎉</div>
+      <div>행사상품</div>
+    </div>
+  </div>
+
+  <p class="shop-hint">우측 하단 AI 로고를 눌러 과거 사례 기반 상품을 추천받아보세요.</p>
+</div>
+
+<button id="chat-fab" type="button" aria-label="AI 상품 제안 챗봇 열기">
+  <svg viewBox="0 0 32 32" width="26" height="26" fill="none" aria-hidden="true">
+    <path d="M16 5C9.4 5 4 9.6 4 15.3c0 3.2 1.7 6.1 4.5 8-.2 1.5-.9 3-1.9 4.2 1.9-.2 3.7-.9 5.2-2 1.3.4 2.7.6 4.2.6 6.6 0 12-4.6 12-10.3S22.6 5 16 5z" fill="white"/>
+  </svg>
+</button>
+
+<aside id="chat-panel" class="imsg-panel" aria-hidden="true">
+  <header class="imsg-header">
+    <button type="button" id="chat-close" class="imsg-back" aria-label="닫기">
+      <svg viewBox="0 0 24 24" width="26" height="26"><path d="M15 5l-7 7 7 7" stroke="#0B84FF" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="imsg-contact">
+      <div class="imsg-avatar">AI</div>
+      <div class="imsg-contact-name">AI 상품 제안</div>
+      <div class="imsg-contact-sub">감동타임</div>
+    </div>
+    <span class="imsg-header-spacer" aria-hidden="true"></span>
+  </header>
+
+  <div id="chat-messages" class="imsg-messages">
+    <div class="imsg-daystamp">오늘</div>
+    <div class="imsg-row imsg-row--received">
+      <div class="imsg-bubble imsg-bubble--received">
+        안녕하세요. 고객 요청을 자연어로 입력해주세요.
+        <div class="imsg-example">예: 직원 500명 대상으로 5만원대 웰컴키트를 찾고 있어.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="imsg-composer">
+    <input type="text" id="chat-customer-name" class="imsg-customer-chip" placeholder="현재 고객사명 (선택, 저장 시 사용)">
+    <form id="chat-form" class="imsg-input-row">
+      <input type="text" id="chat-input" class="imsg-text-input" placeholder="메시지" autocomplete="off" required>
+      <button type="submit" class="imsg-send-btn" aria-label="전송">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="white" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </form>
+  </div>
+</aside>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+{% endblock %}

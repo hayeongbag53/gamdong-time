@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}주문 히스토리 · 감동타임{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="h4 mb-4">관리자 히스토리 조회</h1>
+
+  <form method="get" class="row g-2 mb-4">
+    <div class="col-md-2">
+      <input type="text" name="company" class="form-control form-control-sm" placeholder="고객사명" value="{{ filters.company or '' }}">
+    </div>
+    <div class="col-md-2">
+      <input type="text" name="industry" class="form-control form-control-sm" placeholder="업종" value="{{ filters.industry or '' }}">
+    </div>
+    <div class="col-md-2">
+      <input type="text" name="product" class="form-control form-control-sm" placeholder="상품명" value="{{ filters.product or '' }}">
+    </div>
+    <div class="col-md-2">
+      <input type="number" name="quantity_min" class="form-control form-control-sm" placeholder="최소 수량" value="{{ filters.quantity_min or '' }}">
+    </div>
+    <div class="col-md-2">
+      <input type="number" name="price_max" class="form-control form-control-sm" placeholder="최대 단가" value="{{ filters.price_max or '' }}">
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary btn-sm w-100">검색</button>
+    </div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-sm align-middle">
+      <thead>
+        <tr>
+          <th>고객사</th>
+          <th>업종</th>
+          <th>목적</th>
+          <th>수량</th>
+          <th>1인당 단가</th>
+          <th>만족도</th>
+          <th>재주문</th>
+          <th>주문일</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr data-href="{{ url_for('history.detail_view', order_id=order.id) }}">
+          <td>
+            {% if order.customer and order.customer.logo_url %}
+            <img src="{{ order.customer.logo_url }}" alt="" class="company-logo-sm">
+            {% endif %}
+            {{ order.customer.company_name if order.customer else '-' }}
+          </td>
+          <td>{{ order.customer.industry if order.customer else '-' }}</td>
+          <td>{{ order.purpose }}</td>
+          <td>{{ order.quantity }}</td>
+          <td>{{ "{:,.0f}".format(order.price_per_person) }}원</td>
+          <td>{{ order.satisfaction_score or '-' }}</td>
+          <td>{{ '있음' if order.reorder else '없음' }}</td>
+          <td>{{ order.order_date }}</td>
+          <td><a href="{{ url_for('history.detail_view', order_id=order.id) }}" class="btn btn-sm btn-outline-secondary">상세보기</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="9" class="text-center text-muted py-4">조건에 맞는 히스토리가 없습니다.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/history.js') }}"></script>
+{% endblock %}

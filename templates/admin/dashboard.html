@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}대시보드 · 감동타임{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <h1 class="h4 mb-4">관리자 대시보드</h1>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="stat-card">
+        <div class="stat-label">등록된 고객사</div>
+        <div class="stat-value">{{ stats.customer_count }}</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stat-card">
+        <div class="stat-label">누적 주문 히스토리</div>
+        <div class="stat-value">{{ stats.order_count }}</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stat-card">
+        <div class="stat-label">저장된 최종 제안</div>
+        <div class="stat-value">{{ stats.proposal_count }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mb-4">
+    <a href="{{ url_for('chatbot.shop') }}" class="btn btn-primary">쇼핑몰 · 챗봇으로 이동</a>
+    <a href="{{ url_for('history.list_view') }}" class="btn btn-outline-secondary">전체 히스토리 조회</a>
+  </div>
+
+  <h2 class="h6">최근 내 챗봇 질의</h2>
+  {% if stats.recent_chats %}
+  <ul class="list-group">
+    {% for chat in stats.recent_chats %}
+    <li class="list-group-item">
+      <div class="fw-semibold">{{ chat.user_message }}</div>
+      <div class="text-muted small">{{ chat.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="text-muted">아직 챗봇 질의 기록이 없습니다.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ order.customer.company_name if order.customer else '' }} 주문 상세{% endblock %}
+
+{% block content %}
+<div class="container py-4" style="max-width: 720px;">
+  <a href="{{ url_for('history.list_view') }}" class="small text-muted d-inline-block mb-3">&larr; 목록으로</a>
+
+  <div class="d-flex align-items-center gap-2 mb-1">
+    {% if order.customer and order.customer.logo_url %}
+    <img src="{{ order.customer.logo_url }}" alt="" class="company-logo-lg">
+    {% endif %}
+    <h1 class="h4 mb-0">{{ order.customer.company_name if order.customer else '-' }}</h1>
+  </div>
+  <p class="text-muted mb-4">{{ order.customer.industry if order.customer else '-' }} · {{ order.customer.company_size if order.customer else '-' }}</p>
+
+  <div class="product-thumb-row mb-4">
+    {% for op in order.order_products %}
+    <div class="product-thumb">
+      <img src="{{ op.product.image_url if op.product else '/static/uploads/products/placeholder.svg' }}" alt="{{ op.product.product_name if op.product else '' }}">
+      <div class="small">{{ op.product.product_name if op.product else '-' }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <dl class="detail-spec">
+    <div><dt>주문 목적</dt><dd>{{ order.purpose }}</dd></div>
+    <div><dt>주문 수량</dt><dd>{{ order.quantity }}개</dd></div>
+    <div><dt>1인당 단가</dt><dd>{{ "{:,.0f}".format(order.price_per_person) }}원</dd></div>
+    <div><dt>총 주문 금액</dt><dd>{{ "{:,.0f}".format(order.total_price) }}원</dd></div>
+    <div><dt>주문일</dt><dd>{{ order.order_date }}</dd></div>
+    <div><dt>납품일</dt><dd>{{ order.delivery_date }}</dd></div>
+    <div><dt>실제 납기 기간</dt><dd>{{ order.delivery_days }}일</dd></div>
+    <div><dt>고객 요구사항</dt><dd>{{ order.request_detail }}</dd></div>
+    <div><dt>커스텀 내용</dt><dd>{{ order.custom_detail }}</dd></div>
+    <div><dt>고객 만족도</dt><dd>{{ order.satisfaction_score }} / 5.0</dd></div>
+    <div><dt>재주문 여부</dt><dd>{{ '있음' if order.reorder else '없음' }}</dd></div>
+    <div><dt>담당자 평가</dt><dd>{{ order.manager_comment }}</dd></div>
+  </dl>
+</div>
+{% endblock %}
